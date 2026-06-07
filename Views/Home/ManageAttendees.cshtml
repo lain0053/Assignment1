@@ -1,0 +1,111 @@
+﻿@model Assignment1.Models.DashboardViewModels
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; }
+        * {box-sizing: border-box}
+
+        button {
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+
+        button:hover {
+            opacity: 1;
+        }
+
+        .backButton {
+            background-color: gray;
+        }
+
+        .signupButton {
+            background-color: green;
+        }
+
+        .backButton, .signupButton {
+            float: left;
+            width: 10%;
+            font-size: 12px;
+            margin-right: 14px;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Attendees - @Model.SelectedEvent?.Title</h1>
+    @if (Model.AttendeeRegistered)
+    {
+        <div style="
+            background-color: lightblue;
+            border-left: 5px solid lightblue;
+            color: black;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+        ">
+            <p>Attendee registered!</p>
+        </div>
+    }
+    <div class="container" style="border:1px solid black">
+        <h2>Sign Up for @Model.SelectedEvent?.Title</h2>
+        <form asp-action="AddAttendee" asp-controller="Home" method="POST">
+            <input type="hidden" name="eventId" value="@Model.SelectedEvent?.Id" />
+
+            <label for="name">Name</label>
+            <br/>
+            <input type="text" id="name" name="name" required>
+            <br/>
+            <br/>
+
+            <label for="email">Email</label>
+            <br/>
+            <input type="email" id="email" name="email" required>
+            <br/>
+            <br/>
+
+            <div class="clearfix">
+                <button type="submit" class="signupButton">Sign Up</button>
+            </div>
+        </form>
+
+        <div class="clearfix">
+            <button type="button" class="backButton" onclick="window.location.href='@Url.Action("EventManager")'">Back to Events</button>
+        </div>
+    </div>
+    <h2>Current Attendees (@Model.SelectedEvent?.Attendees.Count)</h2>
+    @if (Model.SelectedEvent != null && Model.SelectedEvent.Attendees.Count > 0)
+    {
+        <ul>
+            @foreach (var attendee in Model.SelectedEvent.Attendees)
+            {
+                <li><strong>@attendee.Name</strong> (@attendee.Email)</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p style="color: gray;">No attendees yet.</p>
+    }
+</body>
+</html>
