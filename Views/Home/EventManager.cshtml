@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Event Manager";
+}
+
+@model Assignment1.Models.DashboardViewModels
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@ViewData["Title"]</title>
+        <style>
+            /* body {font-family: max-width: 900px; color: #333; } */
+            h1 { color: black; padding-bottom: 0px; }
+            h2 { color: gray; margin-top: 0px; font-size: 100%; }
+            table { font-family: arial, sans-serif; border-collapse: collapse; width: 100%; }
+            td, th { text-align: left; padding: 8px; }
+            tr:nth-child(even) { background-color: #dddddd; }
+            button { background-color: dodgerblue; color: white; border: none; }
+        </style>
+    </head>
+    <body>
+        <h1>@ViewData["Title"]</h1>
+        <h2>Select an event to manage attendees</h2>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Location</th>
+            </tr>
+            @foreach (var item in Model.Events)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@item.Location</td>
+                    <td>
+                        <form asp-action= "ManageAttendees" asp-controller="Home" method="POST">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button class="button">Manage Attendees</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </body>
+</html>
