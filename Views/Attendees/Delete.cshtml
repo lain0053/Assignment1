@@ -1,0 +1,19 @@
+﻿@model Assignment1.Models.Attendee
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Attendee</title>
+</head>
+<body>
+    <h1>Delete Attendee - @ViewData["EventTitle"]</h1>
+    <p>Are you sure you want to delete <strong>@Model.Name</strong>?</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+
+    <form asp-controller="Attendees" asp-action="DeleteConfirmed" asp-route-eventId="@ViewData["EventId"]" asp-route-id="@Model.Id" method="POST">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit">Yes, Delete</button>
+        <a href="/events/@ViewData["EventId"]/attendees">Cancel</a>
+    </form>
+</body>
+</html>

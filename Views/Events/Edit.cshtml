@@ -1,0 +1,49 @@
+﻿@model Assignment1.Models.Event
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Event</title>
+</head>
+<body>
+    <h1>Edit Event</h1>
+    <form asp-action="Edit" asp-controller="Events" method="POST" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+
+        <label>Title</label>
+        <br />
+        <input asp-for="Title" />
+        <br /><br />
+
+        <label>Description</label>
+        <br />
+        <textarea asp-for="Description"></textarea>
+        <br /><br />
+
+        <label>Date</label>
+        <br />
+        <input asp-for="Date" type="datetime-local" />
+        <br /><br />
+
+        <label>Location</label>
+        <br />
+        <input asp-for="Location" />
+        <br /><br />
+
+        @if (!string.IsNullOrEmpty(Model.BannerUrl))
+        {
+            <p>Current Banner:</p>
+            <img src="@Model.BannerUrl" style="max-width:300px;" />
+            <br /><br />
+        }
+
+        <label>Upload New Banner Image</label>
+        <br />
+        <input type="file" name="bannerFile" accept="image/*" />
+        <br /><br />
+
+        <button type="submit">Save</button>
+        <a href="/events">Back to List</a>
+    </form>
+</body>
+</html>

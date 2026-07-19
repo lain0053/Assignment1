@@ -1,0 +1,39 @@
+﻿@model Assignment1.Models.Event
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Model.Title</title>
+</head>
+<body>
+    <h1>@Model.Title</h1>
+
+    @if (!string.IsNullOrEmpty(Model.BannerUrl))
+    {
+        <img src="@Model.BannerUrl" alt="Banner" style="width:100%; max-width:600px;" />
+    }
+
+    <p><strong>Description:</strong> @Model.Description</p>
+    <p><strong>Date:</strong> @Model.Date.ToString("yyyy-MM-dd HH:mm")</p>
+    <p><strong>Location:</strong> @Model.Location</p>
+
+    <h2>Attendees</h2>
+    @if (Model.Attendees.Count > 0)
+    {
+        <ul>
+            @foreach (var attendee in Model.Attendees)
+            {
+                <li>@attendee.Name (@attendee.Email)</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No attendees yet.</p>
+    }
+
+    <a href="/events/edit/@Model.Id">Edit Event</a> |
+    <a href="/events/@Model.Id/attendees">Manage Attendees</a> |
+    <a href="/events">Back to List</a>
+</body>
+</html>

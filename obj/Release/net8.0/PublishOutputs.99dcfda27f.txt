@@ -1,0 +1,7 @@
+C:\.NET-Enterprise\Assignment1\obj\Release\net8.0\PubTmp\Out\Assignment1.exe
+C:\.NET-Enterprise\Assignment1\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
+C:\.NET-Enterprise\Assignment1\obj\Release\net8.0\PubTmp\Out\appsettings.json
+C:\.NET-Enterprise\Assignment1\obj\Release\net8.0\PubTmp\Out\Assignment1.dll
+C:\.NET-Enterprise\Assignment1\obj\Release\net8.0\PubTmp\Out\Assignment1.deps.json
+C:\.NET-Enterprise\Assignment1\obj\Release\net8.0\PubTmp\Out\Assignment1.runtimeconfig.json
+C:\.NET-Enterprise\Assignment1\obj\Release\net8.0\PubTmp\Out\Assignment1.pdb

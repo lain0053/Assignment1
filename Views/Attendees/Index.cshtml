@@ -1,0 +1,32 @@
+﻿@model List<Assignment1.Models.Attendee>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Attendees</title>
+</head>
+<body>
+    <h1>Manage Attendees - @ViewData["EventTitle"]</h1>
+    <a href="/events/@ViewData["EventId"]/attendees/create">Add Attendee</a> |
+    <a href="/events/details/@ViewData["EventId"]">Back to Event</a>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+        @foreach (var attendee in Model)
+        {
+            <tr>
+                <td>@attendee.Name</td>
+                <td>@attendee.Email</td>
+                <td>
+                    <a href="/events/@ViewData["EventId"]/attendees/edit/@attendee.Id">Edit</a> |
+                    <a href="/events/@ViewData["EventId"]/attendees/delete/@attendee.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

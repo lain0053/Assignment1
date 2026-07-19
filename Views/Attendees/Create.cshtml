@@ -1,0 +1,25 @@
+﻿@model Assignment1.Models.Attendee
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Attendee</title>
+</head>
+<body>
+    <h1>Add Attendee - @ViewData["EventTitle"]</h1>
+    <form asp-controller="Attendees" asp-action="Create" asp-route-eventId="@ViewData["EventId"]" method="POST">
+        <label>Name</label>
+        <br />
+        <input asp-for="Name" />
+        <br /><br />
+
+        <label>Email</label>
+        <br />
+        <input asp-for="Email" type="email" />
+        <br /><br />
+
+        <button type="submit">Create</button>
+        <a href="/events/@ViewData["EventId"]/attendees">Back</a>
+    </form>
+</body>
+</html>

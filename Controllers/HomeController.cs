@@ -25,16 +25,16 @@ namespace Assignment1.Controllers
             return View();
         }
 
-        private static List<EventManager> _events = new List<EventManager>
+        private static List<Event> _events = new List<Event>
         {
-            new Models.EventManager {
+            new Event {
                 Id = 1,
                 Title = "Career Fair",
                 Date = new DateTime(2026, 02, 01),
                 Location = "Gym",
             },
 
-            new EventManager
+            new Event
             {
                 Id = 2,
                 Title = "Tech Talk",
@@ -42,7 +42,7 @@ namespace Assignment1.Controllers
                 Location = "Auditorium"
             },
 
-            new EventManager
+            new Event
             {
                 Id = 3,
                 Title = "Hack Night",
@@ -50,7 +50,7 @@ namespace Assignment1.Controllers
                 Location = "Library"
             },
 
-            new EventManager
+            new Event
             {
                 Id = 4,
                 Title = "Gonzalo Genek",
@@ -58,7 +58,7 @@ namespace Assignment1.Controllers
                 Location = "Estadio Nacional"
             },
 
-            new EventManager
+            new Event
             {
                 Id = 5,
                 Title = "Jaze",
@@ -66,7 +66,7 @@ namespace Assignment1.Controllers
                 Location = "Costa 21"
             },
 
-            new EventManager
+            new Event
             {
                 Id = 6,
                 Title = "Grupo 5",
@@ -78,6 +78,7 @@ namespace Assignment1.Controllers
         [HttpGet]
         public IActionResult EventManager()
         {
+            ViewData["Title"] = "Event Manager";
             var model = new DashboardViewModels { Events = _events };
             return View(model);
         }
@@ -85,6 +86,7 @@ namespace Assignment1.Controllers
         [HttpPost]
         public IActionResult ManageAttendees(int id)
         {
+            ViewData["Title"] = "Manage Attendees";
             var model = new DashboardViewModels
             {
                 Events = _events,
@@ -96,6 +98,7 @@ namespace Assignment1.Controllers
         [HttpPost]
         public IActionResult AddAttendee(string name, string email, int eventId)
         {
+            ViewData["Title"] = "Manage Attendees";
             var selectedEvent = _events.FirstOrDefault(e => e.Id == eventId);
             selectedEvent?.Attendees.Add(new Attendee { Name = name, Email = email });
 

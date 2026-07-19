@@ -1,0 +1,20 @@
+﻿@model Assignment1.Models.Event
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Event</title>
+</head>
+<body>
+    <h1>Delete Event</h1>
+    <p>Are you sure you want to delete <strong>@Model.Title</strong>?</p>
+    <p><strong>Date:</strong> @Model.Date.ToString("yyyy-MM-dd")</p>
+    <p><strong>Location:</strong> @Model.Location</p>
+
+    <form method="POST" action="/events/delete/@Model.Id">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit">Yes, Delete</button>
+        <a href="/events">Cancel</a>
+    </form>
+</body>
+</html>

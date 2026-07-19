@@ -2,9 +2,9 @@
 {
     public class DashboardViewModels
     {
-        public List<EventManager> Events { get; set; } = new List<EventManager>();
+        public List<Event> Events { get; set; } = new List<Event>();
 
-        public EventManager SelectedEvent { get; set; }
+        public Event? SelectedEvent { get; set; }
         
         public bool AttendeeRegistered { get; set; }
     }
