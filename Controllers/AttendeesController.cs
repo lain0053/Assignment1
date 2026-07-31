@@ -1,5 +1,6 @@
 ﻿using Assignment1.Data;
 using Assignment1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace Assignment1.Controllers
         }
 
         // GET /events/{eventId}/attendees
+        [Authorize]
         [HttpGet("")]
         public async Task<IActionResult> Index(int eventId)
         {
@@ -31,6 +33,7 @@ namespace Assignment1.Controllers
         }
 
         // GET /events/{eventId}/attendees/create
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpGet("create")]
         public async Task<IActionResult> Create(int eventId)
         {
@@ -43,6 +46,7 @@ namespace Assignment1.Controllers
         }
 
         // POST /events/{eventId}/attendees/create
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpPost("create")]
         public async Task<IActionResult> Create(int eventId, Attendee attendee)
         {
@@ -81,6 +85,7 @@ namespace Assignment1.Controllers
         }
 
         // GET /events/{eventId}/attendees/delete/{id}
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete(int eventId, string id)
         {
@@ -93,6 +98,7 @@ namespace Assignment1.Controllers
         }
 
         // POST /events/{eventId}/attendees/delete/{id}
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpPost("delete/{id}")]
         public async Task<IActionResult> DeleteConfirmed(int eventId, string id)
         {

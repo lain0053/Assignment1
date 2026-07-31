@@ -3,10 +3,12 @@ using Assignment1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Assignment1.Controllers
 {
     [Route("events")]
+    [Authorize] //all actions will require login by default
     public class EventsController : Controller
     {
         private readonly AppDbContext _context;
@@ -19,6 +21,7 @@ namespace Assignment1.Controllers
         }
 
         // GET /events
+        [AllowAnonymous] //allow anonymous access to the index page
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
@@ -27,6 +30,7 @@ namespace Assignment1.Controllers
         }
 
         //GET /events/details/5
+        [AllowAnonymous] //allow anonymous access to the index page
         [HttpGet("details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
@@ -41,6 +45,7 @@ namespace Assignment1.Controllers
         }
 
         // GET /events/create
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpGet("create")]
         public IActionResult Create()
         {
@@ -48,6 +53,7 @@ namespace Assignment1.Controllers
         }
 
         // POST /events/create
+        [Authorize(Roles = "Organizer")] //Organizer only        
         [HttpPost("create")]
         public async Task<IActionResult> Create(Event ev, IFormFile? bannerFile)
         {
@@ -74,6 +80,7 @@ namespace Assignment1.Controllers
         }
 
         //GET /events/edit/5
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpGet("edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -86,6 +93,7 @@ namespace Assignment1.Controllers
         }
 
         //POST /events/edit/5
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpPost("edit/{id}")]
         public async Task<IActionResult> Edit(int id, Event ev, IFormFile? bannerFile)
         {
@@ -114,6 +122,7 @@ namespace Assignment1.Controllers
         }
 
         //GET /events/delete/5
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -126,6 +135,7 @@ namespace Assignment1.Controllers
         }
 
         //POST /events/delete/5
+        [Authorize(Roles = "Organizer")] //Organizer only 
         [HttpPost("delete/{id}")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

@@ -32,8 +32,16 @@
         <p>No attendees yet.</p>
     }
 
-    <a href="/events/edit/@Model.Id">Edit Event</a> |
-    <a href="/events/@Model.Id/attendees">Manage Attendees</a> |
+    @if (User.IsInRole("Organizer"))
+    {
+        <a href="/events/edit/@Model.Id">Edit Event</a> 
+        <a href="/events/delete/@Model.Id">Delete Event</a>  
+        <a href="/events/@Model.Id/attendees">Manage Attendees</a>
+    }
+    else if (User.Identity!.IsAuthenticated)
+    {
+        <a href="/events/@Model.Id/attendees">View Attendees</a>
+    }
     <a href="/events">Back to List</a>
 </body>
 </html>

@@ -7,7 +7,10 @@
 </head>
 <body>
     <h1>Manage Attendees - @ViewData["EventTitle"]</h1>
-    <a href="/events/@ViewData["EventId"]/attendees/create">Add Attendee</a> |
+    @if (User.IsInRole("Organizer"))
+    {
+        <a href="/events/@ViewData["EventId"]/attendees/create">Add Attendee</a>
+    }
     <a href="/events/details/@ViewData["EventId"]">Back to Event</a>
 
     <table>
@@ -21,10 +24,13 @@
             <tr>
                 <td>@attendee.Name</td>
                 <td>@attendee.Email</td>
-                <td>
-                    <a href="/events/@ViewData["EventId"]/attendees/edit/@attendee.Id">Edit</a> |
-                    <a href="/events/@ViewData["EventId"]/attendees/delete/@attendee.Id">Delete</a>
-                </td>
+                @if (User.IsInRole("Organizer"))
+                {
+                    <td>
+                        <a href="/events/@ViewData["EventId"]/attendees/edit/@attendee.Id">Edit</a> |
+                        <a href="/events/@ViewData["EventId"]/attendees/delete/@attendee.Id">Delete</a>
+                    </td>
+                }
             </tr>
         }
     </table>
