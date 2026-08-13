@@ -26,6 +26,8 @@ namespace Assignment1
 
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             //Seed the database
@@ -56,6 +58,8 @@ namespace Assignment1
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
            app.MapRazorPages(); // For Identity pages
+
+            app.MapHub<Assignment1.Hubs.EventHub>("/eventHub");
 
             app.Run();
         }

@@ -1,5 +1,7 @@
 ﻿@model Assignment1.Models.Event
 
+@using System.Security.Claims
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,19 +19,16 @@
     <p><strong>Date:</strong> @Model.Date.ToString("yyyy-MM-dd HH:mm")</p>
     <p><strong>Location:</strong> @Model.Location</p>
 
-    <h2>Attendees</h2>
-    @if (Model.Attendees.Count > 0)
+    <h2>Attendees (<span id="attendee-count">@Model.Attendees.Count</span>)</h2>
+    <ul id="attendee-list">
+        @foreach (var attendee in Model.Attendees)
+        {
+            <li>@attendee.Name (@attendee.Email)</li>
+        }
+    </ul>
+    @if (Model.Attendees.Count == 0)
     {
-        <ul>
-            @foreach (var attendee in Model.Attendees)
-            {
-                <li>@attendee.Name (@attendee.Email)</li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No attendees yet.</p>
+        <p id="no-attendees">No attendees yet.</p>
     }
 
     @if (User.IsInRole("Organizer"))
@@ -42,6 +41,80 @@
     {
         <a href="/events/@Model.Id/attendees">View Attendees</a>
     }
+
+    @if (User.Identity!.IsAuthenticated && !User.IsInRole("Organizer"))
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isRegistered = Model.Attendees.Any(a => a.UserId == userId);
+
+        if (isRegistered)
+        {
+            <form method="POST" action="/events/unregister/@Model.Id">
+                <button type="submit">Unregister</button>
+            </form>
+        }
+        else
+        {
+            <form method="POST" action="/events/register/@Model.Id">
+                <button type="submit">Register for this Event</button>
+            </form>
+        }
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <p style="color:red;">@TempData["Error"]</p>
+    }
     <a href="/events">Back to List</a>
+
+    <div id="signalr-status"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script>
+        const eventId = '@Model.Id';
+        const isOrganizer = @Json.Serialize(User.IsInRole("Organizer"));
+
+        const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/eventHub")
+        .build();
+
+        //Listen for attendees registering
+        connection.on("AttendeeRegistered", (attendeeName, attendeeCount) => {
+            document.getElementById("attendee-count").innerText = attendeeCount;
+            const list = document.getElementById("attendee-list");
+            const item = document.createElement("li");
+            item.innerText = attendeeName;
+            list.appendChild(item);
+            const noAttendees = document.getElementById("no-attendees");
+            if (noAttendees) noAttendees.style.display = "none";
+        });
+
+        //Listen for attendees unregistering
+        connection.on("AttendeeUnregistered", (attendeeName, attendeeCount) => {
+            document.getElementById("attendee-count").innerText = attendeeCount;
+            const list = document.getElementById("attendee-list");
+            const items = list.getElementsByTagName("li");
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].innerText.startsWith(attendeeName)) {
+                list.removeChild(items[i]);
+                break;
+                }
+            }
+        });
+
+        // Listen for organizer notifications
+        if (isOrganizer) {
+            connection.on("OrganizerNotification", (message) => {
+                const banner = document.getElementById("signalr-status");
+                banner.style.backgroundColor = "lightblue";
+                banner.style.padding = "10px";
+                banner.innerText = message;
+            });
+        }
+
+        connection.start()
+            .then(() => connection.invoke("JoinEventGroup", eventId))
+            .catch(err => console.error(err));
+    </script>
 </body>
 </html>

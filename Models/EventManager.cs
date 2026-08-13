@@ -8,6 +8,7 @@
         public DateTime Date { get; set; }
         public string? Location { get; set; }
         public string? BannerUrl { get; set; }
+        public string? OrganizerUserId { get; set; }
         public List<Attendee> Attendees { get; set; } = new List<Attendee>();
     }
 }
